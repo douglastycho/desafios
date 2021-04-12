@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: challenge3-front
+  labels:
+    app: challenge3-front
+spec:
+  selector:
+    matchLabels: 
+      app: challenge3-front
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: challenge3-front
+    spec:
+      containers:
+        - name: api
+          image: "douglasdevops/challenge2-front:latest"
+          ports:
+            - containerPort: 80

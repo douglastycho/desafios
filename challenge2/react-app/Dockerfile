@@ -1,7 +1,20 @@
-FROM node:12.14.0-alpine3.11
+FROM node:14.15.4-slim as build
 
-RUN apk add --no-cache bash
+WORKDIR /app
 
-USER node
+COPY package*.json ./
 
-WORKDIR /home/node/app
+RUN npm install
+
+COPY . .
+
+RUN npm run build
+
+#production
+FROM nginx:1.15
+
+COPY --from=build /app/build /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
